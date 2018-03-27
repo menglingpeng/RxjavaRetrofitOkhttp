@@ -21,10 +21,10 @@ public class ExceptionUtil {
     private static final int SERVICE_UNAVAILABLE = 503;
     private static final int GATEWAY_TIMEOUT = 504;
 
-    public static ResponeThrowable geException(Context context, Throwable e){
+    public static ResponseThrowable geException(Context context, Throwable e){
+        ResponseThrowable re = null;
         if(e instanceof HttpException) {
-            ResponeThrowable re;
-            re = new ResponeThrowable(e, ERROR.HTTP_ERROR);
+            re = new ResponseThrowable(e, ERROR.HTTP_ERROR);
             HttpException httpException = (HttpException) e;
             switch (httpException.code()){
                 case UNAUTHORIZED:
@@ -47,8 +47,8 @@ public class ExceptionUtil {
                     re.message = context.getString(R.string.exception_http_error);
                     break;
             }
-            return re;
         }
+        return re;
 
     }
 
@@ -79,11 +79,11 @@ public class ExceptionUtil {
         public static final int SSL_ERROR = 1005;
     }
 
-    public static class ResponeThrowable extends Exception {
+    public static class ResponseThrowable extends Exception {
         public int code;
         public String message;
 
-        public ResponeThrowable(Throwable throwable, int code) {
+        public ResponseThrowable(Throwable throwable, int code) {
             super(throwable);
             this.code = code;
         }

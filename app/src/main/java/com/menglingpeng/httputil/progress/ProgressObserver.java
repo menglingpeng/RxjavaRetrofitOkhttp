@@ -9,7 +9,7 @@ import io.reactivex.disposables.Disposable;
  * Created by mengdroid on 2018/3/25.
  */
 
-public class ProgressObserver<T> implements Observer<T>, ProgressCancleListener{
+public class ProgressObserver<T> implements Observer<T>, ProgressCancelListener {
 
     private ObserverResponseListener listener;
     private Context context;
