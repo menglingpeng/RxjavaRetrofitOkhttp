@@ -12,6 +12,7 @@ import io.reactivex.disposables.Disposable;
 public class ProgressObserver<T> implements Observer<T>, ProgressCancelListener {
 
     private ObserverResponseListener listener;
+    private ProgressDialogHandler mProgressDialogHandler;
     private Context context;
     private Disposable d;
 
@@ -19,14 +20,23 @@ public class ProgressObserver<T> implements Observer<T>, ProgressCancelListener 
                             boolean cancelable){
         this.listener = listener;
         this.context = context;
+        if(isDialog){
+            mProgressDialogHandler = new ProgressDialogHandler(context, this,
+                    cancelable);
+        }
     }
 
     private void showProgressDialog(){
-
+        if (mProgressDialogHandler != null) {
+            mProgressDialogHandler.obtainMessage(ProgressDialogHandler.SHOW_PROGRESS_DIALOG).sendToTarget();
+        }
     }
 
     private void dismissProgressDialog(){
-
+        if (mProgressDialogHandler != null) {
+            mProgressDialogHandler.obtainMessage(ProgressDialogHandler.DISMISS_PROGRESS_DIALOG).sendToTarget();
+            mProgressDialogHandler = null;
+        }
     }
 
     @Override
@@ -51,7 +61,7 @@ public class ProgressObserver<T> implements Observer<T>, ProgressCancelListener 
     }
 
     @Override
-    public void onCancleProgress() {
+    public void onCancelProgress() {
         //如果处于订阅状态，则取消订阅
         if(!d.isDisposed()){
             d.dispose();
