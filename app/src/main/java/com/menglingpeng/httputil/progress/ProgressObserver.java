@@ -2,6 +2,15 @@ package com.menglingpeng.httputil.progress;
 
 import android.content.Context;
 
+import com.bumptech.glide.load.HttpException;
+import com.menglingpeng.httputil.R;
+import com.menglingpeng.httputil.utils.ExceptionUtil;
+import com.menglingpeng.httputil.utils.ToastUtil;
+
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -53,6 +62,24 @@ public class ProgressObserver<T> implements Observer<T>, ProgressCancelListener 
     @Override
     public void onError(Throwable e) {
         dismissProgressDialog();
+        //自定义异常处理
+        if(e instanceof ExceptionUtil.ResponseThrowable){
+            listener.onError((ExceptionUtil.ResponseThrowable)e);
+        } else {
+            listener.onError(new ExceptionUtil.ResponseThrowable(e, ExceptionUtil.ERROR.UNKNOWN));
+        }
+
+        if (e instanceof UnknownHostException) {
+            ToastUtil.showLongToast(context.getString(R.string.exception_unknown_toast_text));
+        } else if (e instanceof SocketTimeoutException) {
+            ToastUtil.showLongToast(context.getString(R.string.exception_time_out_toast_text));
+        } else if (e instanceof ConnectException) {
+            ToastUtil.showLongToast(context.getString(R.string.exception_connect_toast_text));
+        } else if (e instanceof HttpException) {
+            ToastUtil.showLongToast(context.getString(R.string.exception_http_toast_text));
+        }else {
+            ToastUtil.showLongToast(context.getString(R.string.exception__toast_text));
+        }
     }
 
     @Override
