@@ -10,4 +10,10 @@ public class Constants {
     public static final long HTTP_CONFIG_HTTP_CONNECT_TIME = 15;
     public static final long HTTP_CONFIG_HTTP_READ_TIME = 60;
     public static final long HTTP_CONFIG_HTTP_WRITE_TIME = 60;
+
+    //网络连接错误
+    public static int NET_ERROR = 1;
+    public static int NET_CONNECTION_OK = 2;
+    public static int NET_CONNECTION_TIME_OUT = 3;
+    public static int NET_NOT_READY = 4;
 }

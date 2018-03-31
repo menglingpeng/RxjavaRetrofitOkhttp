@@ -26,4 +26,33 @@ public class NetWorkUtil {
         }
         return false;
     }
+
+    /**
+     * 返回当前网络状态
+     */
+    public static int getNetState(Context context) {
+        try {
+            ConnectivityManager connectivity = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivity != null) {
+                NetworkInfo networkinfo = connectivity.getActiveNetworkInfo();
+                if (networkinfo != null) {
+                    if (networkinfo.isAvailable() && networkinfo.isConnected()) {
+                        if (!isNetConnected(context)){
+                            return Constants.NET_CONNECTION_TIME_OUT;
+                        }
+                        else{
+                            return Constants.NET_CONNECTION_OK;
+                        }
+                    } else {
+                        return Constants.NET_NOT_READY;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Constants.NET_ERROR;
+    }
+
 }
