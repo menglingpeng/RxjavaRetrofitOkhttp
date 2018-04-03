@@ -112,4 +112,22 @@ public class RetrofitClient {
                 .baseUrl(baseUrl);
     }
 
+    public RetrofitClient createBaseApi() {
+        apiService = create(ApiService.class);
+        return this;
+    }
+
+    /**
+     * create you ApiService
+     * Create an implementation of the API endpoints defined by the {@code service} interface.
+     */
+    public  <T> T create(final Class<T> service) {
+        if (service == null) {
+            throw new RuntimeException("Api service is null!");
+        }
+        return retrofit.create(service);
+    }
+
+
+
 }

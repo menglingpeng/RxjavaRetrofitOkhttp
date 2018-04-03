@@ -14,7 +14,7 @@ public class NetWorkUtil {
     /**
      * 判断网络状态
      */
-    public static boolean isNetConnected(Context context) {
+    public static boolean isNetWorkConnected(Context context) {
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
@@ -39,7 +39,7 @@ public class NetWorkUtil {
                 NetworkInfo networkinfo = connectivity.getActiveNetworkInfo();
                 if (networkinfo != null) {
                     if (networkinfo.isAvailable() && networkinfo.isConnected()) {
-                        if (!isNetConnected(context)){
+                        if (!isNetWorkConnected(context)){
                             return Constants.NETWORK_CONNECTION_TIME_OUT;
                         }
                         else{
