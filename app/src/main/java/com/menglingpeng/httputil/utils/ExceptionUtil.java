@@ -2,7 +2,12 @@ package com.menglingpeng.httputil.utils;
 
 import android.content.Context;
 
+import com.google.gson.JsonParseException;
 import com.menglingpeng.httputil.R;
+
+import org.json.JSONException;
+
+import java.text.ParseException;
 
 import retrofit2.HttpException;
 
@@ -47,9 +52,20 @@ public class ExceptionUtil {
                     re.message = context.getString(R.string.exception_http_error);
                     break;
             }
+        }else if(e instanceof ServerException){
+            ServerException resultException = (ServerException) e;
+            re = new ResponseThrowable(resultException, resultException.code);
+            re.message = resultException.message;
+        }else if (e instanceof JsonParseException
+                || e instanceof JSONException
+                || e instanceof ParseException) {
+            re = new ResponseThrowable(e, ERROR.PARSE_ERROR);
+            re.message = context.getString(R.string.exception_parse_error);
+        }else {
+            re = new ResponseThrowable(e, ERROR.UNKNOWN);
+            re.message = context.getString(R.string.exception_unknown_error);
         }
         return re;
-
     }
 
     /**
